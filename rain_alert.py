@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+#TODO(luke) - why is the fucking timestamp/date in hte fuutre?!?!?!
+
 '''
 This is a program that looks up the weather for current day and
 emails me if I need to dress for rain
@@ -11,6 +13,7 @@ List of city ID city.list.json.gz can be downloaded here:
 '''
 
 from datetime import datetime
+import time
 import pprint
 import configparser
 import smtplib
@@ -92,7 +95,7 @@ def main():
     url = 'http://api.openweathermap.org/data/2.5/forecast'
     icon_prefix = 'http://openweathermap.org/img/w/'
 
-    config_file = '/home/luke/python/rainAlert/rainAlert.ini'
+    config_file = '/home/luke/python/rainalert/rainAlert.ini'
 
     #Read configuration and get options (mail settings, log file, api key, etc.)
     config = configparser.ConfigParser()
@@ -139,11 +142,12 @@ def main():
     with open(logfile, 'w') as log_file:
         log_file.write('{} Weather: {}\n\n{}\n'.format(
             response.json()['city']['name'],
-            icon_prefix + icon, get_date(item['dt'])))
+            icon_prefix + icon, get_date(time.time())))
 
         log_file.write('\n'.join(output_list))
         log_file.write('\n')
 
+    sys.exit(0)
     if rain_flag:
         alert(logfile, mail_settings)
 
